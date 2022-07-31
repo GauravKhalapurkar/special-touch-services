@@ -63,18 +63,18 @@ public class SelectName extends AppCompatActivity {
                         Intent intent = new Intent(SelectName.this, MainActivity.class);
                         intent.putExtra("therapistName", name);
                         startActivity(intent);
+                    } else {
+                        Toast.makeText(SelectName.this, "Please select your name.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(SelectName.this, "Please wait while it's loading.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
     }
 
     private void getTherapistNames() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbw4m8tC1rkmOgZk0naVWVxbGa2owd_BRfD5woUiLpimIkhEP9m-uP807mL6UnJR3xJypA/exec?action=getItems",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxsT35DagGLz5JvJVqzKqRbVS-fqcq64rb3yxGixJbe8YbY_kdAzQZVueqLxIujGstXwQ/exec?action=getTherapistNames",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
