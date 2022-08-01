@@ -173,9 +173,6 @@ public class MainActivity extends AppCompatActivity {
                 txtClientName.setText("-");
             }
 
-            //txtTherapistName.setText(currentTherapistName);
-
-
             Log.d("THERAPIST_NAMES", String.valueOf(listTherapists));
             Log.d("LIST_TIME", String.valueOf(listTime));
             //Log.d("CURRENT_TIME", String.valueOf(currentTime));
