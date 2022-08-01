@@ -1,14 +1,19 @@
 package com.gakdevelopers.specialtouchservices;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -35,11 +40,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtTherapistName, txtSlot, txtClientName;
+    TextView txtTherapistName, txtSlotDay, txtAt, txtSlotTime, txtClientName;
 
     ArrayList<String> listTherapists, listTime, listClients, listDayOfWeek;
 
@@ -51,8 +57,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txtTherapistName = (TextView) findViewById(R.id.txtTherapistName);
-        txtSlot = (TextView) findViewById(R.id.txtSlot);
+        txtSlotDay = (TextView) findViewById(R.id.txtSlotDay);
+        txtAt = (TextView) findViewById(R.id.txtAt);
+        txtSlotTime = (TextView) findViewById(R.id.txtSlotTime);
         txtClientName = (TextView) findViewById(R.id.txtClientName);
+
+        txtAt.setVisibility(View.GONE);
+        txtSlotTime.setVisibility(View.GONE);
 
         cardHere = (CardView) findViewById(R.id.cardHere);
         cardAbsent = (CardView) findViewById(R.id.cardAbsent);
@@ -68,28 +79,100 @@ public class MainActivity extends AppCompatActivity {
         cardHere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                addToSheet("Here", "NA");
             }
         });
 
         cardAbsent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                addToSheet("Absent", "NA");
             }
         });
 
         cardPhoneCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+                builder.setTitle("Message");
+
+                final EditText input = new EditText(MainActivity.this);
+                input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                builder.setView(input);
+
+                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String message = input.getText().toString();
+                        addToSheet("Phone Call", "" + message);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
     }
 
+    private void addToSheet(String sts, String msg) {
+        final ProgressDialog loading = ProgressDialog.show(this, "Saving Data", "Please Wait");
+        final String therapist = txtTherapistName.getText().toString().trim();
+        final String dayOfWeek = txtSlotDay.getText().toString().trim();
+        final String time = txtSlotTime.getText().toString().trim();
+        final String client = txtClientName.getText().toString().trim();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbz9IfyollSEmnJJB7esEqK3eQ6wkRhSKyig78kpO85cgkKngvUBAV7r8CZCb23Og7-_Ag/exec",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        loading.dismiss();
+                        Toast.makeText(MainActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parmas = new HashMap<>();
+
+                parmas.put("action", "addItem");
+                parmas.put("Therapists", therapist);
+                parmas.put("DayOfWeek", dayOfWeek);
+                parmas.put("Time", "'" + time);
+                parmas.put("Client", client);
+                parmas.put("Status", sts);
+                parmas.put("Message", msg);
+
+                return parmas;
+            }
+        };
+        int socketTimeOut = 30000;
+
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        queue.add(stringRequest);
+
+    }
+
     private void getScheduleDetails() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxsT35DagGLz5JvJVqzKqRbVS-fqcq64rb3yxGixJbe8YbY_kdAzQZVueqLxIujGstXwQ/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbz9IfyollSEmnJJB7esEqK3eQ6wkRhSKyig78kpO85cgkKngvUBAV7r8CZCb23Og7-_Ag/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -161,16 +244,22 @@ public class MainActivity extends AppCompatActivity {
                     currentTimeSlot = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Long.parseLong(listTime.get(i))),
                             TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(listTime.get(i))) % TimeUnit.HOURS.toMinutes(1));
 
-                    txtSlot.setText(currentTimeSlot);
+                    txtSlotDay.setText(listDayOfWeek.get(i));
+                    txtSlotTime.setText(currentTimeSlot);
                     txtClientName.setText(listClients.get(i));
+
+                    txtAt.setVisibility(View.VISIBLE);
+                    txtSlotTime.setVisibility(View.VISIBLE);
 
                     //Log.d("FINAL_TIME", currentTimeSlot);
                 }
             }
 
-            if (txtSlot.getText().toString().equals("Loading...")) {
-                txtSlot.setText("No bookings for now.");
-                txtClientName.setText("-");
+            if (txtSlotDay.getText().toString().equals("Loading...")) {
+                txtSlotDay.setText("No bookings for now.");
+                txtClientName.setText("NA");
+                txtAt.setVisibility(View.GONE);
+                txtSlotTime.setVisibility(View.GONE);
             }
 
             Log.d("THERAPIST_NAMES", String.valueOf(listTherapists));

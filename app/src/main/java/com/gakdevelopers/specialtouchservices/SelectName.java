@@ -74,7 +74,7 @@ public class SelectName extends AppCompatActivity {
     }
 
     private void getTherapistNames() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxsT35DagGLz5JvJVqzKqRbVS-fqcq64rb3yxGixJbe8YbY_kdAzQZVueqLxIujGstXwQ/exec?action=getTherapistNames",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbz9IfyollSEmnJJB7esEqK3eQ6wkRhSKyig78kpO85cgkKngvUBAV7r8CZCb23Og7-_Ag/exec?action=getTherapistNames",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
