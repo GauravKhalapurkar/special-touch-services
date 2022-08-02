@@ -53,13 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static String therapistName = null;
 
+    LinearLayout linearCards;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //IMP
-        //therapistName = getIntent().getStringExtra("therapistName");
+        therapistName = getIntent().getStringExtra("therapistName");
 
         txtTherapistName = (TextView) findViewById(R.id.txtTherapistName);
         txtSlotDay = (TextView) findViewById(R.id.txtSlotDay);
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         txtClientName = (TextView) findViewById(R.id.txtClientName);
 
         //IMP
-        //txtTherapistName.setText("" + therapistName);
+        txtTherapistName.setText("" + therapistName);
 
         txtAt.setVisibility(View.GONE);
         txtSlotTime.setVisibility(View.GONE);
@@ -76,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         cardHere = (CardView) findViewById(R.id.cardHere);
         cardAbsent = (CardView) findViewById(R.id.cardAbsent);
         cardPhoneCall = (CardView) findViewById(R.id.cardPhoneCall);
+
+        linearCards = (LinearLayout) findViewById(R.id.linearCards);
+        for ( int i = 0; i < linearCards.getChildCount();  i++ ){
+            View view = linearCards.getChildAt(i);
+            view.setVisibility(View.GONE);
+        }
 
         listTherapists = new ArrayList<>();
         listTime = new ArrayList<>();
@@ -88,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addToSheet("Here", "NA");
+
+                String therapist = txtTherapistName.getText().toString();
+                String dayOfWeek = txtSlotDay.getText().toString();
+                String time = txtSlotTime.getText().toString();
+                String client = txtClientName.getText().toString();
+
+                deleteCurrentItem(therapist, dayOfWeek, time, client);
             }
         });
 
@@ -95,6 +110,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addToSheet("Absent", "NA");
+
+                String therapist = txtTherapistName.getText().toString();
+                String dayOfWeek = txtSlotDay.getText().toString();
+                String time = txtSlotTime.getText().toString();
+                String client = txtClientName.getText().toString();
+
+                deleteCurrentItem(therapist, dayOfWeek, time, client);
             }
         });
 
@@ -115,6 +137,13 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String message = input.getText().toString();
                         addToSheet("Phone Call", "" + message);
+
+                        String therapist = txtTherapistName.getText().toString();
+                        String dayOfWeek = txtSlotDay.getText().toString();
+                        String time = txtSlotTime.getText().toString();
+                        String client = txtClientName.getText().toString();
+
+                        deleteCurrentItem(therapist, dayOfWeek, time, client);
                     }
                 });
 
@@ -131,6 +160,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void deleteCurrentItem(String therapist, String dayOfWeek, String time, String client) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseItems(response);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //progressBarName.setVisibility(View.GONE);
+                    }
+                }
+        );
+
+        int socketTimeOut = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        stringRequest.setRetryPolicy(policy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
     private void addToSheet(String sts, String msg) {
         final ProgressDialog loading = ProgressDialog.show(this, "Saving Data", "Please Wait");
         final String therapist = txtTherapistName.getText().toString().trim();
@@ -138,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         final String time = txtSlotTime.getText().toString().trim();
         final String client = txtClientName.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -181,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getScheduleDetails() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -260,7 +316,10 @@ public class MainActivity extends AppCompatActivity {
                     txtAt.setVisibility(View.VISIBLE);
                     txtSlotTime.setVisibility(View.VISIBLE);
 
-                    //Log.d("FINAL_TIME", currentTimeSlot);
+                    for ( int j = 0; j < linearCards.getChildCount();  j++ ){
+                        View view = linearCards.getChildAt(j);
+                        view.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -273,21 +332,16 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("THERAPIST_NAMES", String.valueOf(listTherapists));
             Log.d("LIST_TIME", String.valueOf(listTime));
-            //Log.d("CURRENT_TIME", String.valueOf(currentTime));
-            //Log.d("TOTAL", String.valueOf(currentTimeInMS));
 
         } catch (JSONException e) {
-            Log.d("GET_ERROR", e.getMessage());
+            Toast.makeText(this, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        //progressBarName.setVisibility(View.GONE);
-
     }
 
     public void showSchedule(View view) {
         Intent intent = new Intent(MainActivity.this, Schedule.class);
         //IMP
-        //intent.putExtra("therapistName", therapistName);
+        intent.putExtra("therapistName", therapistName);
         startActivity(intent);
     }
 }

@@ -49,9 +49,9 @@ public class Schedule extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         //IMP
-        //therapistName = getIntent().getStringExtra("therapistName");
+        therapistName = getIntent().getStringExtra("therapistName");
 
-        therapistName = "Sharma";
+        //therapistName = "Sharma";
 
         tglBtn = (ToggleButton) findViewById(R.id.tglBtn);
 
@@ -76,7 +76,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSchedule() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -105,7 +105,7 @@ public class Schedule extends AppCompatActivity {
     private void loadHistory() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
