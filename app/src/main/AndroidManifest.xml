@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Schedule"
+            android:exported="false" />
+        <activity
             android:name=".SelectName"
             android:exported="false" />
         <activity

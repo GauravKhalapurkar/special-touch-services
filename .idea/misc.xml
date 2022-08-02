@@ -5,7 +5,9 @@
       <map>
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/drawable/custom_input.xml" value="0.187" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_schedule.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_select_name.xml" value="0.25" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/history_items.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/schedule_items.xml" value="0.25" />
       </map>
     </option>

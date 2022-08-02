@@ -51,16 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
     CardView cardHere, cardAbsent, cardPhoneCall;
 
+    public static String therapistName = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //IMP
+        //therapistName = getIntent().getStringExtra("therapistName");
 
         txtTherapistName = (TextView) findViewById(R.id.txtTherapistName);
         txtSlotDay = (TextView) findViewById(R.id.txtSlotDay);
         txtAt = (TextView) findViewById(R.id.txtAt);
         txtSlotTime = (TextView) findViewById(R.id.txtSlotTime);
         txtClientName = (TextView) findViewById(R.id.txtClientName);
+
+        //IMP
+        //txtTherapistName.setText("" + therapistName);
 
         txtAt.setVisibility(View.GONE);
         txtSlotTime.setVisibility(View.GONE);
@@ -99,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                 final EditText input = new EditText(MainActivity.this);
                 input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                input.setHint("(Optional)");
                 builder.setView(input);
 
                 builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -129,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         final String time = txtSlotTime.getText().toString().trim();
         final String client = txtClientName.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbz9IfyollSEmnJJB7esEqK3eQ6wkRhSKyig78kpO85cgkKngvUBAV7r8CZCb23Og7-_Ag/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -172,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getScheduleDetails() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbz9IfyollSEmnJJB7esEqK3eQ6wkRhSKyig78kpO85cgkKngvUBAV7r8CZCb23Og7-_Ag/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxb2E5kfzOA4o-Vyu8B1_ej1LTcSKhQslb8_d70JT6cnxDyKuMz3XwEBw8UyjWC5EDq9w/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -273,5 +282,12 @@ public class MainActivity extends AppCompatActivity {
 
         //progressBarName.setVisibility(View.GONE);
 
+    }
+
+    public void showSchedule(View view) {
+        Intent intent = new Intent(MainActivity.this, Schedule.class);
+        //IMP
+        //intent.putExtra("therapistName", therapistName);
+        startActivity(intent);
     }
 }

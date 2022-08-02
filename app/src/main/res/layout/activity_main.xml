@@ -147,7 +147,7 @@
                                     android:id="@+id/txtTherapistName"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Sham"
+                                    android:text="Sharma"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_16sdp"/>
 
@@ -260,7 +260,8 @@
                                 android:text="History and schedule"
                                 android:drawableStart="@drawable/ic_schedule"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:textSize="@dimen/_13sdp"/>
+                                android:textSize="@dimen/_13sdp"
+                                android:onClick="showSchedule"/>
 
                         </LinearLayout>
 

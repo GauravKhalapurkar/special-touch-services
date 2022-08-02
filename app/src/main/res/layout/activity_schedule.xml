@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="@dimen/_4sdp"
+    tools:context=".Schedule">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to switch the records"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_13sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <ToggleButton
+                android:id="@+id/tglBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="SCHEDULE"
+                android:textOn="HISTORY"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:padding="@dimen/_15sdp"
+                android:singleLine="true"
+                android:textSize="@dimen/_11sdp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
