@@ -14,8 +14,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_90sdp"
             android:src="@drawable/logo" />
 
         <LinearLayout
@@ -24,34 +24,94 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Click to switch the records"
-                android:layout_gravity="center"
-                android:textSize="@dimen/_13sdp"
-                android:layout_marginBottom="@dimen/_10sdp"/>
+                android:orientation="horizontal">
 
-            <ToggleButton
-                android:id="@+id/tglBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="SCHEDULE"
-                android:textOn="HISTORY"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:padding="@dimen/_15sdp"
-                android:singleLine="true"
-                android:textSize="@dimen/_11sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Click to switch \nthe records"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_weight="1"/>
+
+                <ToggleButton
+                    android:id="@+id/tglBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="SCHEDULE"
+                    android:textOn="HISTORY"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_7sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:layout_weight="1">
+
+            <Spinner
+                android:id="@+id/spinnerName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_47sdp"
+                android:background="@drawable/custom_input"
+                android:paddingLeft="@dimen/_11sdp"
+                android:paddingRight="@dimen/_11sdp" />
+
+            <ProgressBar
+                android:id="@+id/progressBarName"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabExport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_export"
+            android:layout_marginVertical="@dimen/_7sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:backgroundTint="@color/white"
+            android:tint="@color/black" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_items"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="No data to show."
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="italic"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"/>
 
 </LinearLayout>

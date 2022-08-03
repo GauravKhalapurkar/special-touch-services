@@ -3,11 +3,14 @@ package com.gakdevelopers.specialtouchservices;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -19,11 +22,14 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +49,10 @@ public class Schedule extends AppCompatActivity {
 
     SimpleAdapter adapter;
 
+    TextView txtNoData;
+
+    FloatingActionButton fabExport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +66,12 @@ public class Schedule extends AppCompatActivity {
         tglBtn = (ToggleButton) findViewById(R.id.tglBtn);
 
         listView = (ListView) findViewById(R.id.lv_items);
+        listView.setVisibility(View.GONE);
+
+        txtNoData = (TextView) findViewById(R.id.txtNoData);
+        txtNoData.setVisibility(View.GONE);
+
+        fabExport = (FloatingActionButton) findViewById(R.id.fabExport);
 
         tglBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +87,98 @@ public class Schedule extends AppCompatActivity {
         });
 
         loadSchedule();
+
+        fabExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new androidx.appcompat.app.AlertDialog.Builder(Schedule.this)
+                        .setIcon(R.drawable.ic_export)
+                        .setTitle("Export to Excel")
+                        .setMessage("Do you want to export data to excel? The file will be saved in DOWNLOADS folder.")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String dateAndTime = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date());
+
+                                String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                                File file = new File(pdfPath, "STS Report - " + dateAndTime + ".csv");
+
+                                try {
+                                    FileWriter fw = new FileWriter(file);
+
+                                    fw.append("").append("Academic Year");
+                                    fw.append(",");
+                                    fw.append("").append("Class");
+                                    fw.append(",");
+                                    fw.append("").append("Branch");
+                                    fw.append(",");
+                                    fw.append("").append("Project Type");
+                                    fw.append(",");
+                                    fw.append("").append("Subject");
+                                    fw.append(",");
+                                    fw.append("").append("Project Title");
+                                    fw.append(",");
+                                    fw.append("").append("Member 1");
+                                    fw.append(",");
+                                    fw.append("").append("Member 2");
+                                    fw.append(",");
+                                    fw.append("").append("Member 3");
+                                    fw.append(",");
+                                    fw.append("").append("Member 4");
+                                    fw.append(",");
+                                    fw.append("").append("Member 5");
+                                    fw.append(",");
+                                    fw.append("").append("Member 6");
+                                    fw.append(",");
+                                    fw.append("").append("Concept/Idea");
+                                    fw.append(",");
+                                    fw.append("").append("Presentation");
+                                    fw.append(",");
+                                    fw.append("").append("Team Work");
+                                    fw.append(",");
+                                    fw.append("").append("Subject Knowledge");
+                                    fw.append(",");
+                                    fw.append("").append("Question Answer");
+                                    fw.append(",");
+                                    fw.append("").append("Total");
+                                    fw.append("\n");
+
+                                    /*for (int i = 0; i < arrayList.size(); i++) {
+                                        FetchData model = arrayList.get(i);
+                                        String academicYear = model.getAcademicYear();
+                                        String classS = model.getYear();
+                                        String branch = model.getBranch();
+                                        String projectType = model.getProjectType();
+                                        String subject = model.getSubject();
+                                        String projectTitle = model.getProjectTitle();
+
+                                        fw.append("").append(academicYear);
+                                        fw.append(",");
+                                        fw.append("").append(classS);
+                                        fw.append(",");
+                                        fw.append("").append(branch);
+                                        fw.append(",");
+                                        fw.append("").append(projectType);
+                                        fw.append(",");
+                                        fw.append("").append(subject);
+                                        fw.append(",");
+                                        fw.append("").append(projectTitle);
+                                        fw.append("\n");
+                                    }*/
+
+                                    fw.flush();
+                                    fw.close();
+
+                                    Toast.makeText(Schedule.this, "File saved to: " + file, Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(Schedule.this, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+        });
     }
 
     private void loadSchedule() {
@@ -160,10 +268,17 @@ public class Schedule extends AppCompatActivity {
             Log.d("GET_ERROR", e.getMessage());
         }
 
-        adapter = new SimpleAdapter(this, list, R.layout.schedule_items,
-                new String[]{"DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+        if (list.isEmpty()) {
+            txtNoData.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        } else {
+            txtNoData.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new SimpleAdapter(this, list, R.layout.schedule_items,
+                    new String[]{"DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
-        listView.setAdapter((android.widget.ListAdapter) adapter);
+            listView.setAdapter((android.widget.ListAdapter) adapter);
+        }
 
         loading.dismiss();
     }
@@ -201,10 +316,17 @@ public class Schedule extends AppCompatActivity {
             Log.d("GET_ERROR", e.getMessage());
         }
 
-        adapter = new SimpleAdapter(this, list, R.layout.history_items,
-                new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
+        if (list.isEmpty()) {
+            txtNoData.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        } else {
+            txtNoData.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new SimpleAdapter(this, list, R.layout.history_items,
+                    new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
 
-        listView.setAdapter((android.widget.ListAdapter) adapter);
+            listView.setAdapter((android.widget.ListAdapter) adapter);
+        }
 
         loading.dismiss();
     }

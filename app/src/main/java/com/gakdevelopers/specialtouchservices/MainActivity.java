@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -96,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addToSheet("Here", "NA");
-
-                String therapist = txtTherapistName.getText().toString();
-                String dayOfWeek = txtSlotDay.getText().toString();
-                String time = txtSlotTime.getText().toString();
-                String client = txtClientName.getText().toString();
-
-                deleteCurrentItem(therapist, dayOfWeek, time, client);
             }
         });
 
@@ -110,13 +104,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addToSheet("Absent", "NA");
-
-                String therapist = txtTherapistName.getText().toString();
-                String dayOfWeek = txtSlotDay.getText().toString();
-                String time = txtSlotTime.getText().toString();
-                String client = txtClientName.getText().toString();
-
-                deleteCurrentItem(therapist, dayOfWeek, time, client);
             }
         });
 
@@ -137,13 +124,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String message = input.getText().toString();
                         addToSheet("Phone Call", "" + message);
-
-                        String therapist = txtTherapistName.getText().toString();
-                        String dayOfWeek = txtSlotDay.getText().toString();
-                        String time = txtSlotTime.getText().toString();
-                        String client = txtClientName.getText().toString();
-
-                        deleteCurrentItem(therapist, dayOfWeek, time, client);
                     }
                 });
 
@@ -160,33 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void deleteCurrentItem(String therapist, String dayOfWeek, String time, String client) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        parseItems(response);
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        //progressBarName.setVisibility(View.GONE);
-                    }
-                }
-        );
-
-        int socketTimeOut = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-
-        stringRequest.setRetryPolicy(policy);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
     private void addToSheet(String sts, String msg) {
         final ProgressDialog loading = ProgressDialog.show(this, "Saving Data", "Please Wait");
         final String therapist = txtTherapistName.getText().toString().trim();
@@ -199,13 +152,21 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         loading.dismiss();
-                        Toast.makeText(MainActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+
+                        String therapist = txtTherapistName.getText().toString();
+                        String dayOfWeek = txtSlotDay.getText().toString();
+                        String time = txtSlotTime.getText().toString();
+                        String client = txtClientName.getText().toString();
+
+                        deleteCurrentItem(therapist, dayOfWeek, time, client);
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "ERROR SAVING: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
                     }
                 }
@@ -236,20 +197,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getScheduleDetails() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=getSchedule",
+    private void deleteCurrentItem(String therapist, String dayOfWeek, String time, String client) {
+        final ProgressDialog loading = ProgressDialog.show(this, "Removing Data", "Please Wait");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        parseItems(response);
+                        loading.dismiss();
+                        getScheduleDetails();
                     }
                 },
 
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        //progressBarName.setVisibility(View.GONE);
+                        Toast.makeText(MainActivity.this, "ERROR REMOVING: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                    }
+                }
+        );
+
+        int socketTimeOut = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        stringRequest.setRetryPolicy(policy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    public void getScheduleDetails() {
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please Wait");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=getSchedule",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseItems(response);
+                        loading.dismiss();
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loading.dismiss();
+                        Toast.makeText(MainActivity.this, "ERROR LOADING: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -268,11 +262,24 @@ public class MainActivity extends AppCompatActivity {
         String currentTimeSlot = "";
         String accountHolder = txtTherapistName.getText().toString();
 
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        for ( int j = 0; j < linearCards.getChildCount();  j++ ){
+            View view = linearCards.getChildAt(j);
+            view.setVisibility(View.GONE);
+        }
+
+        txtSlotDay.setText("Loading...");
+        txtClientName.setText("Loading...");
+        txtAt.setVisibility(View.GONE);
+        txtSlotTime.setVisibility(View.GONE);
 
         try {
             JSONObject jObj = new JSONObject(jsonResponse);
             JSONArray jArray = jObj.getJSONArray("items");
+
+            listTherapists.clear();
+            listDayOfWeek.clear();
+            listTime.clear();
+            listClients.clear();
 
             for (int i = 0; i < jArray.length(); i++) {
 
@@ -281,6 +288,10 @@ public class MainActivity extends AppCompatActivity {
                 String dayOfWeek = jo.getString("DayOfWeek");
                 String time = jo.getString("Time");
                 String client = jo.getString("Client");
+
+                if (time.equals("")) {
+                    continue;
+                }
 
                 String[] tokens = time.split(":");
                 int minutesToMs = Integer.parseInt(tokens[1]) * 60000;
