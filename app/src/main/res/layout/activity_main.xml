@@ -29,6 +29,22 @@
                     android:src="@drawable/logo"
                     android:layout_gravity="center" />
 
+                <TextView
+                    android:id="@+id/txtUpdatedOn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="time"
+                    android:textSize="@dimen/_15sdp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Refresh now"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/blue"
+                    android:textStyle="italic"
+                    android:onClick="refresh"/>
+
                 <LinearLayout
                     android:id="@+id/linearCards"
                     android:layout_width="match_parent"

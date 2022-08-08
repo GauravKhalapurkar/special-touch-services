@@ -94,7 +94,8 @@
             android:layout_marginVertical="@dimen/_7sdp"
             android:layout_marginHorizontal="@dimen/_4sdp"
             android:backgroundTint="@color/white"
-            android:tint="@color/black" />
+            android:tint="@color/black"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -42,11 +42,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtTherapistName, txtSlotDay, txtAt, txtSlotTime, txtClientName;
+    TextView txtTherapistName, txtSlotDay, txtAt, txtSlotTime, txtClientName, txtUpdatedOn;
 
     ArrayList<String> listTherapists, listTime, listClients, listDayOfWeek;
 
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         txtAt = (TextView) findViewById(R.id.txtAt);
         txtSlotTime = (TextView) findViewById(R.id.txtSlotTime);
         txtClientName = (TextView) findViewById(R.id.txtClientName);
+        txtUpdatedOn = (TextView) findViewById(R.id.txtUpdatedOn);
 
         //IMP
         txtTherapistName.setText("" + therapistName);
@@ -91,7 +94,17 @@ public class MainActivity extends AppCompatActivity {
         listClients = new ArrayList<>();
         listDayOfWeek = new ArrayList<>();
 
-        getScheduleDetails();
+        final Handler ha = new Handler();
+        ha.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getScheduleDetails();
+                String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                txtUpdatedOn.setText("Last updated @ " + currentTime);
+                ha.postDelayed(this, 300000);
+
+            }
+        }, 0);
 
         cardHere.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,5 +367,9 @@ public class MainActivity extends AppCompatActivity {
         //IMP
         intent.putExtra("therapistName", therapistName);
         startActivity(intent);
+    }
+
+    public void refresh(View view) {
+        getScheduleDetails();
     }
 }

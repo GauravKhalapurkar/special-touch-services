@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +66,9 @@ public class Schedule extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapterName;
     ProgressBar progressBarName;
 
-    //ArrayList<HashMap<String, String>> list = new ArrayList<>();
+    ArrayList<String> arrayListData;
+
+    ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,8 @@ public class Schedule extends AppCompatActivity {
 
         spinnerName = (Spinner) findViewById(R.id.spinnerName);
         progressBarName = (ProgressBar) findViewById(R.id.progressBarName);
+
+        arrayListData = new ArrayList<>();
 
         arrayListName = new ArrayList<>();
         arrayAdapterName = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayListName);
@@ -156,7 +161,7 @@ public class Schedule extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /*String dateAndTime = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date());
+                                String dateAndTime = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date());
 
                                 String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
                                 File file = new File(pdfPath, "STS Report - " + dateAndTime + ".csv");
@@ -180,14 +185,14 @@ public class Schedule extends AppCompatActivity {
                                     for (int i = 0; i < list.size(); i++) {
 
                                         HashMap<String, String> academicYear = list.get(i);
-                                        String classS = model.getYear();
+                                        /*String classS = model.getYear();
                                         String branch = model.getBranch();
                                         String projectType = model.getProjectType();
                                         String subject = model.getSubject();
-                                        String projectTitle = model.getProjectTitle();
+                                        String projectTitle = model.getProjectTitle();*/
 
                                         fw.append("").append((CharSequence) academicYear);
-                                        fw.append(",");
+                                        /*fw.append(",");
                                         fw.append("").append(classS);
                                         fw.append(",");
                                         fw.append("").append(branch);
@@ -196,7 +201,7 @@ public class Schedule extends AppCompatActivity {
                                         fw.append(",");
                                         fw.append("").append(subject);
                                         fw.append(",");
-                                        fw.append("").append(projectTitle);
+                                        fw.append("").append(projectTitle);*/
                                         fw.append("\n");
 
                                         Log.d("FILE_CONTENTS", String.valueOf(academicYear));
@@ -208,8 +213,8 @@ public class Schedule extends AppCompatActivity {
                                     Toast.makeText(Schedule.this, "File saved to: " + file, Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     Toast.makeText(Schedule.this, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }*/
-                                Toast.makeText(Schedule.this, "Coming soon", Toast.LENGTH_SHORT).show();
+                                }
+                                //Toast.makeText(Schedule.this, "Coming soon", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -341,7 +346,7 @@ public class Schedule extends AppCompatActivity {
 
     private void parseScheduleItems(String jsonResponse) {
 
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         arrayListName.add("---All clients---");
 
@@ -374,6 +379,7 @@ public class Schedule extends AppCompatActivity {
                 item.put("Client", Client);
 
                 if (Therapists.equals(therapistName))
+                    //arrayListData.add(item);
                     list.add(item);
             }
 
@@ -402,7 +408,7 @@ public class Schedule extends AppCompatActivity {
 
     private void parseSelectedScheduleClients(String jsonResponse) {
 
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         try {
             JSONObject jObj = new JSONObject(jsonResponse);
@@ -446,7 +452,7 @@ public class Schedule extends AppCompatActivity {
 
     private void parseSelectedHistoryClients(String jsonResponse) {
 
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         try {
             JSONObject jObj = new JSONObject(jsonResponse);
