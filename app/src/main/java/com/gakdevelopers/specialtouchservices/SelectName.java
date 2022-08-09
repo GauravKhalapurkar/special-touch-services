@@ -48,7 +48,7 @@ public class SelectName extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnNext);
 
         arrayListName = new ArrayList<>();
-        arrayAdapterName = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayListName);
+        arrayAdapterName = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayListName);
         spinnerName.setAdapter(arrayAdapterName);
 
         getTherapistNames();
