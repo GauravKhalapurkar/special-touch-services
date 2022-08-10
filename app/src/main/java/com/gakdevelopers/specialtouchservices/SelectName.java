@@ -126,4 +126,8 @@ public class SelectName extends AppCompatActivity {
         progressBarName.setVisibility(View.GONE);
 
     }
+
+    public void openAdminLogin(View view) {
+        startActivity(new Intent(SelectName.this, AdminLogin.class));
+    }
 }
