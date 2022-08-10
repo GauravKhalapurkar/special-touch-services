@@ -7,15 +7,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_1sdp"
         android:elevation="@dimen/_4sdp"
-        android:layout_marginVertical="@dimen/_5sdp"
+        android:layout_marginVertical="@dimen/_1sdp"
         android:backgroundTint="@color/green">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_1sdp"
             android:layout_marginLeft="@dimen/_5sdp">
 
             <LinearLayout
@@ -30,20 +30,19 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="DAY OF WEEK"
-                            android:textSize="@dimen/_13sdp"/>
+                            android:textSize="@dimen/_13sdp"/>-->
 
                         <TextView
                             android:id="@+id/txtDayOfWeek"
-                            android:layout_width="match_parent"
+                            android:layout_width="@dimen/_100sdp"
                             android:layout_height="wrap_content"
                             android:text="Monday"
                             android:textColor="@color/black"
@@ -52,20 +51,19 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TIME"
-                            android:textSize="@dimen/_13sdp"/>
+                            android:textSize="@dimen/_13sdp"/>-->
 
                         <TextView
                             android:id="@+id/txtTime"
-                            android:layout_width="match_parent"
+                            android:layout_width="@dimen/_65sdp"
                             android:layout_height="wrap_content"
                             android:text="17:54"
                             android:textColor="@color/black"
@@ -73,74 +71,138 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CLIENT"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtClient"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Client"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="CLIENT"-->
+<!--                            android:textSize="@dimen/_13sdp"/>-->
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/txtClient"
+                            android:layout_width="@dimen/_180sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Client"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sdp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/_10sdp">
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="STATUS"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Status"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="CLIENT"-->
+<!--                            android:textSize="@dimen/_13sdp"/>-->
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/txtStatus"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Status"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sdp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/_10sdp">
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MESSAGE"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Message"
-                        android:textStyle="italic"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp"/>
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:text="CLIENT"-->
+                        <!--                            android:textSize="@dimen/_13sdp"/>-->
+
+                        <TextView
+                            android:id="@+id/txtMessage"
+                            android:layout_width="@dimen/_200sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Message"
+                            android:textStyle="italic"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sdp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="CLIENT"-->
+<!--                        android:textSize="@dimen/_13sdp"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtClient"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Client"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_16sdp"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="STATUS"-->
+<!--                        android:textSize="@dimen/_13sdp"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtStatus"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Status"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_16sdp"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="MESSAGE"-->
+<!--                        android:textSize="@dimen/_13sdp"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtMessage"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Message"-->
+<!--                        android:textStyle="italic"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_16sdp"/>-->
+
+<!--                </LinearLayout>-->
 
             </LinearLayout>
 
