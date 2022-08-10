@@ -12,8 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AdminLogin"
+            android:name=".AdminSchedule"
             android:exported="false" />
+        <activity
+            android:name=".AdminLogin"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Schedule"
             android:exported="false" />
@@ -28,7 +32,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

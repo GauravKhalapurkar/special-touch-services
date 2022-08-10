@@ -26,6 +26,7 @@
             android:layout_height="@dimen/_45sdp"
             android:background="@drawable/custom_input"
             android:hint="Password"
+            android:text="secretadmin"
             android:textSize="@dimen/_14sdp"
             android:paddingHorizontal="@dimen/_15sdp"
             android:inputType="textPassword" />

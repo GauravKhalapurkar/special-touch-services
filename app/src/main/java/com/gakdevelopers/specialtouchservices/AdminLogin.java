@@ -34,8 +34,8 @@ public class AdminLogin extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(AdminLogin.this, MainActivity.class);
-                intent.putExtra("admin", "admin");
+                Intent intent = new Intent(AdminLogin.this, AdminSchedule.class);
+                intent.putExtra("therapistName", "admin");
                 startActivity(intent);
             }
         });

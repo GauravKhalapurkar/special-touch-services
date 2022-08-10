@@ -45,7 +45,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Schedule extends AppCompatActivity {
+public class AdminSchedule extends AppCompatActivity {
 
     String therapistName = null;
 
@@ -61,10 +61,10 @@ public class Schedule extends AppCompatActivity {
 
     FloatingActionButton fabExport;
 
-    Spinner spinnerName;
+    Spinner spinnerClient, spinnerTherapist;
     ArrayList<String> arrayListName;
     ArrayAdapter<String> arrayAdapterName;
-    ProgressBar progressBarName;
+    ProgressBar progressBarClientSpinner, progressBarTherapistSpinner;
 
     ArrayList<String> arrayListData;
 
@@ -73,19 +73,22 @@ public class Schedule extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_admin_schedule);
 
         //IMP
         therapistName = getIntent().getStringExtra("therapistName");
 
-        spinnerName = (Spinner) findViewById(R.id.spinnerName);
-        progressBarName = (ProgressBar) findViewById(R.id.progressBarName);
+        spinnerClient = (Spinner) findViewById(R.id.spinnerClient);
+        spinnerTherapist = (Spinner) findViewById(R.id.spinnerTherapist);
+        progressBarClientSpinner = (ProgressBar) findViewById(R.id.progressBarClientSpinner);
+        progressBarTherapistSpinner = (ProgressBar) findViewById(R.id.progressBarTherapistSpinner);
 
         arrayListData = new ArrayList<>();
 
         arrayListName = new ArrayList<>();
         arrayAdapterName = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayListName);
-        spinnerName.setAdapter(arrayAdapterName);
+        spinnerClient.setAdapter(arrayAdapterName);
+        spinnerTherapist.setAdapter(arrayAdapterName);
 
         tglBtn = (ToggleButton) findViewById(R.id.tglBtn);
 
@@ -101,13 +104,15 @@ public class Schedule extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
-                    spinnerName.setSelection(0);
+                    spinnerClient.setSelection(0);
+                    spinnerTherapist.setSelection(0);
                     loadSchedule();
                     loading.dismiss();
                 }
 
                 if (tglBtn.getText().toString().equals("HISTORY")) {
-                    spinnerName.setSelection(0);
+                    spinnerClient.setSelection(0);
+                    spinnerTherapist.setSelection(0);
                     loadHistory();
                     loading.dismiss();
                 }
@@ -116,7 +121,7 @@ public class Schedule extends AppCompatActivity {
 
         loadSchedule();
 
-        spinnerName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
@@ -149,76 +154,38 @@ public class Schedule extends AppCompatActivity {
 
         });
 
-        /*fabExport.setOnClickListener(new View.OnClickListener() {
+        spinnerTherapist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(Schedule.this)
-                        .setIcon(R.drawable.ic_export)
-                        .setTitle("Export to Excel")
-                        .setMessage("Do you want to export data to excel? The file will be saved in DOWNLOADS folder.")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String dateAndTime = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date());
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                                String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                                File file = new File(pdfPath, "STS Report - " + dateAndTime + ".csv");
+                if (tglBtn.getText().toString().equals("SCHEDULE")) {
+                    if (position == 0) {
+                        loadSchedule();
+                    }
 
-                                try {
-                                    FileWriter fw = new FileWriter(file);
+                    if (position != 0) {
+                        loadSelectedScheduleClients();
+                    }
+                }
 
-                                    fw.append("").append("Therapist");
-                                    fw.append(",");
-                                    fw.append("").append("Day Of Week");
-                                    fw.append(",");
-                                    fw.append("").append("Time");
-                                    fw.append(",");
-                                    fw.append("").append("Client");
-                                    fw.append(",");
-                                    fw.append("").append("Status");
-                                    fw.append(",");
-                                    fw.append("").append("Message");
-                                    fw.append("\n");
+                if (tglBtn.getText().toString().equals("HISTORY")) {
+                    if (position == 0) {
+                        loadHistory();
+                    }
 
-                                    for (int i = 0; i < list.size(); i++) {
+                    if (position != 0) {
+                        loadSelectedHistoryClients();
+                    }
+                }
 
-                                        HashMap<String, String> academicYear = list.get(i);
-                                        String classS = model.getYear();
-                                        String branch = model.getBranch();
-                                        String projectType = model.getProjectType();
-                                        String subject = model.getSubject();
-                                        String projectTitle = model.getProjectTitle();
-
-                                        fw.append("").append((CharSequence) academicYear);
-                                        fw.append(",");
-                                        fw.append("").append(classS);
-                                        fw.append(",");
-                                        fw.append("").append(branch);
-                                        fw.append(",");
-                                        fw.append("").append(projectType);
-                                        fw.append(",");
-                                        fw.append("").append(subject);
-                                        fw.append(",");
-                                        fw.append("").append(projectTitle);
-                                        fw.append("\n");
-
-                                        Log.d("FILE_CONTENTS", String.valueOf(academicYear));
-                                    }
-
-                                    fw.flush();
-                                    fw.close();
-
-                                    Toast.makeText(Schedule.this, "File saved to: " + file, Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                    Toast.makeText(Schedule.this, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                                //Toast.makeText(Schedule.this, "Coming soon", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
             }
-        });*/
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
     }
 
@@ -236,9 +203,9 @@ public class Schedule extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Schedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
-                        progressBarName.setVisibility(View.GONE);
+                        progressBarClientSpinner.setVisibility(View.GONE);
                     }
                 }
         );
@@ -266,9 +233,9 @@ public class Schedule extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Schedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
-                        progressBarName.setVisibility(View.GONE);
+                        progressBarClientSpinner.setVisibility(View.GONE);
                     }
                 }
         );
@@ -296,9 +263,9 @@ public class Schedule extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Schedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
-                        progressBarName.setVisibility(View.GONE);
+                        progressBarClientSpinner.setVisibility(View.GONE);
                     }
                 }
         );
@@ -326,7 +293,7 @@ public class Schedule extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Schedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
                     }
                 }
@@ -342,6 +309,8 @@ public class Schedule extends AppCompatActivity {
     }
 
     private void parseScheduleItems(String jsonResponse) {
+
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         list.clear();
 
@@ -369,12 +338,12 @@ public class Schedule extends AppCompatActivity {
                 arrayListName.addAll(ay);
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Therapists", Therapists);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
 
-                if (Therapists.equals(therapistName))
-                    list.add(item);
+                list.add(item);
             }
 
             arrayAdapterName.notifyDataSetChanged();
@@ -383,7 +352,7 @@ public class Schedule extends AppCompatActivity {
             Log.d("GET_ERROR", e.getMessage());
         }
 
-        progressBarName.setVisibility(View.GONE);
+        progressBarClientSpinner.setVisibility(View.GONE);
 
         if (list.isEmpty()) {
             txtNoData.setVisibility(View.VISIBLE);
@@ -391,8 +360,8 @@ public class Schedule extends AppCompatActivity {
         } else {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new SimpleAdapter(this, list, R.layout.schedule_items,
-                    new String[]{"DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+            adapter = new SimpleAdapter(this, list, R.layout.admin_schedule_items,
+                    new String[]{"Therapists", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -401,6 +370,8 @@ public class Schedule extends AppCompatActivity {
     }
 
     private void parseSelectedScheduleClients(String jsonResponse) {
+
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         list.clear();
 
@@ -417,11 +388,19 @@ public class Schedule extends AppCompatActivity {
                 String Client = jo.getString("Client");
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Therapists", Therapists);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
 
-                if (Therapists.equals(therapistName) && Client.equals(spinnerName.getSelectedItem()))
+                if (!spinnerTherapist.getSelectedItem().equals("---All therapists---") && !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                    list.add(item);
+                }
+
+                if (Therapists.equals(spinnerTherapist.getSelectedItem()) && spinnerClient.getSelectedItem().equals("---All clients---"))
+                    list.add(item);
+
+                if (Client.equals(spinnerClient.getSelectedItem()) && spinnerTherapist.getSelectedItem().equals("---All therapists---"))
                     list.add(item);
             }
 
@@ -435,8 +414,8 @@ public class Schedule extends AppCompatActivity {
         } else {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new SimpleAdapter(this, list, R.layout.schedule_items,
-                    new String[]{"DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+            adapter = new SimpleAdapter(this, list, R.layout.admin_schedule_items,
+                    new String[]{"Therapists", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -445,6 +424,8 @@ public class Schedule extends AppCompatActivity {
     }
 
     private void parseSelectedHistoryClients(String jsonResponse) {
+
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         list.clear();
 
@@ -469,7 +450,7 @@ public class Schedule extends AppCompatActivity {
                 item.put("Status", Status);
                 item.put("Message", Message);
 
-                if (Therapists.equals(therapistName) && Client.equals(spinnerName.getSelectedItem()))
+                if (Client.equals(spinnerClient.getSelectedItem()))
                     list.add(item);
             }
 
@@ -494,6 +475,8 @@ public class Schedule extends AppCompatActivity {
 
     private void parseHistoryItems(String jsonResponse) {
 
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
+
         list.clear();
 
         try {
@@ -517,8 +500,7 @@ public class Schedule extends AppCompatActivity {
                 item.put("Status", Status);
                 item.put("Message", Message);
 
-                if (Therapists.equals(therapistName))
-                    list.add(item);
+                list.add(item);
             }
 
         } catch (JSONException e) {
