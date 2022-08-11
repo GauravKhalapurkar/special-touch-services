@@ -41,8 +41,29 @@
                             android:textSize="@dimen/_13sdp"/>-->
 
                         <TextView
+                            android:id="@+id/txtTherapistName"
+                            android:layout_width="@dimen/_180sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Therapist"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!--<TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DAY OF WEEK"
+                            android:textSize="@dimen/_13sdp"/>-->
+
+                        <TextView
                             android:id="@+id/txtDate"
-                            android:layout_width="@dimen/_100sdp"
+                            android:layout_width="@dimen/_120sdp"
                             android:layout_height="wrap_content"
                             android:text="30-07-2022"
                             android:textColor="@color/black"
@@ -97,11 +118,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="CLIENT"-->
-<!--                            android:textSize="@dimen/_13sdp"/>-->
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:text="CLIENT"-->
+                        <!--                            android:textSize="@dimen/_13sdp"/>-->
 
                         <TextView
                             android:id="@+id/txtClient"
@@ -118,11 +139,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="CLIENT"-->
-<!--                            android:textSize="@dimen/_13sdp"/>-->
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:text="CLIENT"-->
+                        <!--                            android:textSize="@dimen/_13sdp"/>-->
 
                         <TextView
                             android:id="@+id/txtStatus"
@@ -158,72 +179,72 @@
 
                 </LinearLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="CLIENT"-->
-<!--                        android:textSize="@dimen/_13sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="CLIENT"-->
+                <!--                        android:textSize="@dimen/_13sdp"/>-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtClient"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Client"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="@dimen/_16sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/txtClient"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Client"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="@dimen/_16sdp"/>-->
 
-<!--                </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="STATUS"-->
-<!--                        android:textSize="@dimen/_13sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="STATUS"-->
+                <!--                        android:textSize="@dimen/_13sdp"/>-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtStatus"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Status"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="@dimen/_16sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/txtStatus"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Status"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="@dimen/_16sdp"/>-->
 
-<!--                </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="MESSAGE"-->
-<!--                        android:textSize="@dimen/_13sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="MESSAGE"-->
+                <!--                        android:textSize="@dimen/_13sdp"/>-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtMessage"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Message"-->
-<!--                        android:textStyle="italic"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="@dimen/_16sdp"/>-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/txtMessage"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Message"-->
+                <!--                        android:textStyle="italic"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="@dimen/_16sdp"/>-->
 
-<!--                </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
             </LinearLayout>
 

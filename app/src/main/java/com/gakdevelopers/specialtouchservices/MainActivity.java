@@ -156,11 +156,14 @@ public class MainActivity extends AppCompatActivity {
     private void addToSheet(String sts, String msg) {
         final ProgressDialog loading = ProgressDialog.show(this, "Saving Data", "Please Wait");
         final String therapist = txtTherapistName.getText().toString().trim();
+
+        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
         final String dayOfWeek = txtSlotDay.getText().toString().trim();
         final String time = txtSlotTime.getText().toString().trim();
         final String client = txtClientName.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -190,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                 parmas.put("action", "addItem");
                 parmas.put("Therapists", therapist);
+                parmas.put("Date", "'" + date);
                 parmas.put("DayOfWeek", dayOfWeek);
                 parmas.put("Time", "'" + time);
                 parmas.put("Client", client);
@@ -207,13 +211,12 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         queue.add(stringRequest);
-
     }
 
     private void deleteCurrentItem(String therapist, String dayOfWeek, String time, String client) {
         final ProgressDialog loading = ProgressDialog.show(this, "Removing Data", "Please Wait");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -243,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
     public void getScheduleDetails() {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please Wait");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec" + "?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec" + "?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

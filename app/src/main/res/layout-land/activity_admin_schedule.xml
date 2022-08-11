@@ -14,21 +14,20 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_90sdp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
             android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,32 +49,73 @@
                     android:gravity="center"
                     android:padding="@dimen/_15sdp"
                     android:singleLine="true"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:layout_weight="1"/>
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_weight="1">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_2sdp">
 
-                <Spinner
-                    android:id="@+id/spinnerName"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:background="@drawable/custom_input"
-                    android:paddingLeft="@dimen/_11sdp"
-                    android:paddingRight="@dimen/_11sdp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:layout_weight="1">
 
-                <ProgressBar
-                    android:id="@+id/progressBarName"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_centerInParent="true" />
+                    <Spinner
+                        android:id="@+id/spinnerTherapist"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_47sdp"
+                        android:background="@drawable/custom_input"
+                        android:paddingLeft="@dimen/_11sdp"
+                        android:paddingRight="@dimen/_11sdp" />
 
-            </RelativeLayout>
+                    <ProgressBar
+                        android:id="@+id/progressBarTherapistSpinner"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:layout_weight="1">
+
+                    <Spinner
+                        android:id="@+id/spinnerClient"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_47sdp"
+                        android:background="@drawable/custom_input"
+                        android:paddingLeft="@dimen/_11sdp"
+                        android:paddingRight="@dimen/_11sdp" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarClientSpinner"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabExport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_export"
+                    android:layout_marginVertical="@dimen/_7sdp"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:backgroundTint="@color/white"
+                    android:tint="@color/black"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

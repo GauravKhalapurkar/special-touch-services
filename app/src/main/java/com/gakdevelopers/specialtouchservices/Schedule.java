@@ -225,7 +225,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSchedule() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -255,7 +255,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSelectedScheduleClients() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -285,7 +285,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSelectedHistoryClients() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -315,7 +315,7 @@ public class Schedule extends AppCompatActivity {
     private void loadHistory() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -456,6 +456,7 @@ public class Schedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
@@ -463,6 +464,7 @@ public class Schedule extends AppCompatActivity {
                 String Message = jo.getString("Message");
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -484,7 +486,7 @@ public class Schedule extends AppCompatActivity {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             adapter = new SimpleAdapter(this, list, R.layout.history_items,
-                    new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
+                    new String[]{"Date", "DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -504,6 +506,7 @@ public class Schedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
@@ -511,6 +514,7 @@ public class Schedule extends AppCompatActivity {
                 String Message = jo.getString("Message");
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -532,7 +536,7 @@ public class Schedule extends AppCompatActivity {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             adapter = new SimpleAdapter(this, list, R.layout.history_items,
-                    new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
+                    new String[]{"Date", "DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }

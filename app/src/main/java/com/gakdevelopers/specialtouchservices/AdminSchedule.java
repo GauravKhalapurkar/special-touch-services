@@ -62,11 +62,12 @@ public class AdminSchedule extends AppCompatActivity {
     FloatingActionButton fabExport;
 
     Spinner spinnerClient, spinnerTherapist;
-    ArrayList<String> arrayListName;
-    ArrayAdapter<String> arrayAdapterName;
-    ProgressBar progressBarClientSpinner, progressBarTherapistSpinner;
 
-    ArrayList<String> arrayListData;
+    ArrayList<String> arrayListClient, arrayListTherapist;
+
+    ArrayAdapter<String> arrayAdapterClient, arrayAdapterTherapist;
+
+    ProgressBar progressBarClientSpinner, progressBarTherapistSpinner;
 
     ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
@@ -83,12 +84,13 @@ public class AdminSchedule extends AppCompatActivity {
         progressBarClientSpinner = (ProgressBar) findViewById(R.id.progressBarClientSpinner);
         progressBarTherapistSpinner = (ProgressBar) findViewById(R.id.progressBarTherapistSpinner);
 
-        arrayListData = new ArrayList<>();
+        arrayListClient = new ArrayList<>();
+        arrayAdapterClient = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayListClient);
+        spinnerClient.setAdapter(arrayAdapterClient);
 
-        arrayListName = new ArrayList<>();
-        arrayAdapterName = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayListName);
-        spinnerClient.setAdapter(arrayAdapterName);
-        spinnerTherapist.setAdapter(arrayAdapterName);
+        arrayListTherapist = new ArrayList<>();
+        arrayAdapterTherapist = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayListTherapist);
+        spinnerTherapist.setAdapter(arrayAdapterTherapist);
 
         tglBtn = (ToggleButton) findViewById(R.id.tglBtn);
 
@@ -121,16 +123,17 @@ public class AdminSchedule extends AppCompatActivity {
 
         loadSchedule();
 
-        spinnerClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerTherapist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
                     if (position == 0) {
                         loadSchedule();
+                        loading.dismiss();
                     }
 
-                    if (position != 0) {
+                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
                         loadSelectedScheduleClients();
                     }
                 }
@@ -138,9 +141,10 @@ public class AdminSchedule extends AppCompatActivity {
                 if (tglBtn.getText().toString().equals("HISTORY")) {
                     if (position == 0) {
                         loadHistory();
+                        loading.dismiss();
                     }
 
-                    if (position != 0) {
+                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
                         loadSelectedHistoryClients();
                     }
                 }
@@ -154,16 +158,18 @@ public class AdminSchedule extends AppCompatActivity {
 
         });
 
-        spinnerTherapist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
+
                     if (position == 0) {
                         loadSchedule();
+                        loading.dismiss();
                     }
 
-                    if (position != 0) {
+                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
                         loadSelectedScheduleClients();
                     }
                 }
@@ -171,9 +177,10 @@ public class AdminSchedule extends AppCompatActivity {
                 if (tglBtn.getText().toString().equals("HISTORY")) {
                     if (position == 0) {
                         loadHistory();
+                        loading.dismiss();
                     }
 
-                    if (position != 0) {
+                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
                         loadSelectedHistoryClients();
                     }
                 }
@@ -192,7 +199,7 @@ public class AdminSchedule extends AppCompatActivity {
     private void loadSchedule() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -206,6 +213,7 @@ public class AdminSchedule extends AppCompatActivity {
                         Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
                         progressBarClientSpinner.setVisibility(View.GONE);
+                        progressBarTherapistSpinner.setVisibility(View.GONE);
                     }
                 }
         );
@@ -222,7 +230,7 @@ public class AdminSchedule extends AppCompatActivity {
     private void loadSelectedScheduleClients() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -236,36 +244,7 @@ public class AdminSchedule extends AppCompatActivity {
                         Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading.dismiss();
                         progressBarClientSpinner.setVisibility(View.GONE);
-                    }
-                }
-        );
-
-        int socketTimeOut = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-
-        stringRequest.setRetryPolicy(policy);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    private void loadSelectedHistoryClients() {
-        loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getHistory",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        parseSelectedHistoryClients(response);
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                        progressBarClientSpinner.setVisibility(View.GONE);
+                        progressBarTherapistSpinner.setVisibility(View.GONE);
                     }
                 }
         );
@@ -282,7 +261,7 @@ public class AdminSchedule extends AppCompatActivity {
     private void loadHistory() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbwKyFsA_ps_eRVGWQLOjiPQHYS4ShcundZm8rfd-A5GiCzPMStoymh36pxQNZVt-SONQg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -308,13 +287,45 @@ public class AdminSchedule extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    private void loadSelectedHistoryClients() {
+        loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseSelectedHistoryClients(response);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AdminSchedule.this, "ERROR: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                        progressBarClientSpinner.setVisibility(View.GONE);
+                        progressBarTherapistSpinner.setVisibility(View.GONE);
+                    }
+                }
+        );
+
+        int socketTimeOut = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        stringRequest.setRetryPolicy(policy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
     private void parseScheduleItems(String jsonResponse) {
 
         //ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         list.clear();
 
-        arrayListName.add("---All clients---");
+        arrayListClient.add("---All clients---");
+        arrayListTherapist.add("---All therapists---");
 
         try {
             JSONObject jObj = new JSONObject(jsonResponse);
@@ -328,14 +339,19 @@ public class AdminSchedule extends AppCompatActivity {
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
 
-                if (!Client.equals(""))
-                    arrayListName.add(Client);
+                if (!Client.equals("")) {
+                    arrayListClient.add(Client);
+                    arrayListTherapist.add(Therapists);
+                }
 
-                Set<String> ay = new LinkedHashSet<String>(arrayListName);
+                Set<String> ayc = new LinkedHashSet<String>(arrayListClient);
+                Set<String> ayt = new LinkedHashSet<String>(arrayListTherapist);
 
-                arrayListName.clear();
+                arrayListClient.clear();
+                arrayListTherapist.clear();
 
-                arrayListName.addAll(ay);
+                arrayListClient.addAll(ayc);
+                arrayListTherapist.addAll(ayt);
 
                 HashMap<String, String> item = new HashMap<>();
                 item.put("Therapists", Therapists);
@@ -346,13 +362,15 @@ public class AdminSchedule extends AppCompatActivity {
                 list.add(item);
             }
 
-            arrayAdapterName.notifyDataSetChanged();
+            arrayAdapterClient.notifyDataSetChanged();
+            arrayAdapterTherapist.notifyDataSetChanged();
 
         } catch (JSONException e) {
             Log.d("GET_ERROR", e.getMessage());
         }
 
         progressBarClientSpinner.setVisibility(View.GONE);
+        progressBarTherapistSpinner.setVisibility(View.GONE);
 
         if (list.isEmpty()) {
             txtNoData.setVisibility(View.VISIBLE);
@@ -371,8 +389,6 @@ public class AdminSchedule extends AppCompatActivity {
 
     private void parseSelectedScheduleClients(String jsonResponse) {
 
-        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
-
         list.clear();
 
         try {
@@ -393,7 +409,8 @@ public class AdminSchedule extends AppCompatActivity {
                 item.put("Time", Time);
                 item.put("Client", Client);
 
-                if (!spinnerTherapist.getSelectedItem().equals("---All therapists---") && !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                if ((!spinnerTherapist.getSelectedItem().equals("---All therapists---") && !spinnerClient.getSelectedItem().equals("---All clients---")) &&
+                        (Therapists.equals(spinnerTherapist.getSelectedItem()) && Client.equals(spinnerClient.getSelectedItem()))) {
                     list.add(item);
                 }
 
@@ -423,6 +440,58 @@ public class AdminSchedule extends AppCompatActivity {
         loading.dismiss();
     }
 
+    private void parseHistoryItems(String jsonResponse) {
+
+        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
+
+        list.clear();
+
+        try {
+            JSONObject jObj = new JSONObject(jsonResponse);
+            JSONArray jArray = jObj.getJSONArray("items");
+
+            for (int i = 0; i < jArray.length(); i++) {
+
+                JSONObject jo = jArray.getJSONObject(i);
+                String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
+                String DayOfWeek = jo.getString("DayOfWeek");
+                String Time = jo.getString("Time");
+                String Client = jo.getString("Client");
+                String Status = jo.getString("Status");
+                String Message = jo.getString("Message");
+
+                HashMap<String, String> item = new HashMap<>();
+                item.put("Therapists", Therapists);
+                item.put("Date", Date);
+                item.put("DayOfWeek", DayOfWeek);
+                item.put("Time", Time);
+                item.put("Client", Client);
+                item.put("Status", Status);
+                item.put("Message", Message);
+
+                list.add(item);
+            }
+
+        } catch (JSONException e) {
+            Log.d("GET_ERROR", e.getMessage());
+        }
+
+        if (list.isEmpty()) {
+            txtNoData.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        } else {
+            txtNoData.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new SimpleAdapter(this, list, R.layout.admin_history_items,
+                    new String[]{"Therapists", "Date", "DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtTherapistName, R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
+
+            listView.setAdapter((android.widget.ListAdapter) adapter);
+        }
+
+        loading.dismiss();
+    }
+
     private void parseSelectedHistoryClients(String jsonResponse) {
 
         //ArrayList<HashMap<String, String>> list = new ArrayList<>();
@@ -437,6 +506,7 @@ public class AdminSchedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
@@ -444,6 +514,8 @@ public class AdminSchedule extends AppCompatActivity {
                 String Message = jo.getString("Message");
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Therapists", Therapists);
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -464,57 +536,8 @@ public class AdminSchedule extends AppCompatActivity {
         } else {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new SimpleAdapter(this, list, R.layout.history_items,
-                    new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
-
-            listView.setAdapter((android.widget.ListAdapter) adapter);
-        }
-
-        loading.dismiss();
-    }
-
-    private void parseHistoryItems(String jsonResponse) {
-
-        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
-
-        list.clear();
-
-        try {
-            JSONObject jObj = new JSONObject(jsonResponse);
-            JSONArray jArray = jObj.getJSONArray("items");
-
-            for (int i = 0; i < jArray.length(); i++) {
-
-                JSONObject jo = jArray.getJSONObject(i);
-                String Therapists = jo.getString("Therapists");
-                String DayOfWeek = jo.getString("DayOfWeek");
-                String Time = jo.getString("Time");
-                String Client = jo.getString("Client");
-                String Status = jo.getString("Status");
-                String Message = jo.getString("Message");
-
-                HashMap<String, String> item = new HashMap<>();
-                item.put("DayOfWeek", DayOfWeek);
-                item.put("Time", Time);
-                item.put("Client", Client);
-                item.put("Status", Status);
-                item.put("Message", Message);
-
-                list.add(item);
-            }
-
-        } catch (JSONException e) {
-            Log.d("GET_ERROR", e.getMessage());
-        }
-
-        if (list.isEmpty()) {
-            txtNoData.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
-        } else {
-            txtNoData.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
-            adapter = new SimpleAdapter(this, list, R.layout.history_items,
-                    new String[]{"DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
+            adapter = new SimpleAdapter(this, list, R.layout.admin_history_items,
+                    new String[]{"Therapists", "Date", "DayOfWeek", "Time", "Client", "Status", "Message"}, new int[]{R.id.txtTherapistName, R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient, R.id.txtStatus, R.id.txtMessage});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }

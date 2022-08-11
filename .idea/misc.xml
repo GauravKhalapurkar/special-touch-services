@@ -6,10 +6,11 @@
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/drawable/custom_input.xml" value="0.187" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/drawable/ic_export.xml" value="0.1975" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_admin_login.xml" value="0.176" />
-        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_admin_schedule.xml" value="0.43243243243243246" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_admin_schedule.xml" value="0.136" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_main.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_schedule.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/activity_select_name.xml" value="0.176" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/admin_history_items.xml" value="0.152" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/admin_schedule_items.xml" value="0.2" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout-land/schedule_items.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_admin_login.xml" value="0.1875" />
@@ -17,6 +18,7 @@
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_schedule.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_select_name.xml" value="0.2" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/admin_history_items.xml" value="0.1875" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/admin_schedule_items.xml" value="0.1875" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/history_items.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/schedule_items.xml" value="0.25" />
