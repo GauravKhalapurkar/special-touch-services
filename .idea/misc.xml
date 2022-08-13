@@ -18,11 +18,13 @@
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_schedule.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_select_name.xml" value="0.2" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/activity_stats_view.xml" value="0.1875" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/admin_history_items.xml" value="0.1875" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/admin_schedule_items.xml" value="0.1875" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/history_items.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/schedule_items.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/spinner_item.xml" value="0.1875" />
+        <entry key="..\:/AndroidStudio/SpecialTouchServices/app/src/main/res/layout/stats_items.xml" value="0.1875" />
       </map>
     </option>
   </component>

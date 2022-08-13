@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -128,25 +130,41 @@ public class AdminSchedule extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
-                    if (position == 0) {
+
+                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                        loadSelectedScheduleClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0  && !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                        loadSelectedScheduleClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0 && spinnerClient.getSelectedItem().equals("---All clients---")) {
                         loadSchedule();
                         loading.dismiss();
                     }
 
-                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
-                        loadSelectedScheduleClients();
-                    }
                 }
 
                 if (tglBtn.getText().toString().equals("HISTORY")) {
-                    if (position == 0) {
+
+                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                        loadSelectedHistoryClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0  && !spinnerClient.getSelectedItem().equals("---All clients---")) {
+                        loadSelectedHistoryClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0 && spinnerClient.getSelectedItem().equals("---All clients---")) {
                         loadHistory();
                         loading.dismiss();
                     }
 
-                    if (position != 0 || !spinnerClient.getSelectedItem().equals("---All clients---")) {
-                        loadSelectedHistoryClients();
-                    }
                 }
 
             }
@@ -164,25 +182,40 @@ public class AdminSchedule extends AppCompatActivity {
 
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
 
-                    if (position == 0) {
+                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
+                        loadSelectedScheduleClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0  && !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
+                        loadSelectedScheduleClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0 && spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
                         loadSchedule();
                         loading.dismiss();
                     }
 
-                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
-                        loadSelectedScheduleClients();
-                    }
                 }
 
                 if (tglBtn.getText().toString().equals("HISTORY")) {
-                    if (position == 0) {
+
+                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
+                        loadSelectedHistoryClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0  && !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
+                        loadSelectedHistoryClients();
+                        loading.dismiss();
+                    }
+
+                    if (position == 0 && spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
                         loadHistory();
                         loading.dismiss();
                     }
 
-                    if (position != 0 || !spinnerTherapist.getSelectedItem().equals("---All therapists---")) {
-                        loadSelectedHistoryClients();
-                    }
                 }
 
             }
@@ -522,7 +555,15 @@ public class AdminSchedule extends AppCompatActivity {
                 item.put("Status", Status);
                 item.put("Message", Message);
 
-                if (Client.equals(spinnerClient.getSelectedItem()))
+                if ((!spinnerTherapist.getSelectedItem().equals("---All therapists---") && !spinnerClient.getSelectedItem().equals("---All clients---")) &&
+                        (Therapists.equals(spinnerTherapist.getSelectedItem()) && Client.equals(spinnerClient.getSelectedItem()))) {
+                    list.add(item);
+                }
+
+                if (Therapists.equals(spinnerTherapist.getSelectedItem()) && spinnerClient.getSelectedItem().equals("---All clients---"))
+                    list.add(item);
+
+                if (Client.equals(spinnerClient.getSelectedItem()) && spinnerTherapist.getSelectedItem().equals("---All therapists---"))
                     list.add(item);
             }
 
@@ -543,5 +584,17 @@ public class AdminSchedule extends AppCompatActivity {
         }
 
         loading.dismiss();
+    }
+
+    public void viewTherapistStats(View view) {
+        Intent intent = new Intent(AdminSchedule.this, StatsView.class);
+        intent.putExtra("type", "therapist");
+        startActivity(intent);
+    }
+
+    public void viewClientStats(View view) {
+        Intent intent = new Intent(AdminSchedule.this, StatsView.class);
+        intent.putExtra("type", "client");
+        startActivity(intent);
     }
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -542,5 +543,12 @@ public class Schedule extends AppCompatActivity {
         }
 
         loading.dismiss();
+    }
+
+    public void viewStats(View view) {
+        Intent intent = new Intent(Schedule.this, StatsView.class);
+        intent.putExtra("type", "user");
+        intent.putExtra("therapistName", therapistName);
+        startActivity(intent);
     }
 }
