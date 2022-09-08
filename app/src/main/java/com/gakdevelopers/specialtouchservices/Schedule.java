@@ -3,6 +3,7 @@ package com.gakdevelopers.specialtouchservices;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -38,6 +40,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -71,6 +74,8 @@ public class Schedule extends AppCompatActivity {
 
     ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
+    TextView txtAppointmentDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,8 @@ public class Schedule extends AppCompatActivity {
 
         txtNoData = (TextView) findViewById(R.id.txtNoData);
         txtNoData.setVisibility(View.GONE);
+
+        txtAppointmentDate = (TextView) findViewById(R.id.txtAppointmentDate);
 
         fabExport = (FloatingActionButton) findViewById(R.id.fabExport);
 
@@ -150,83 +157,12 @@ public class Schedule extends AppCompatActivity {
 
         });
 
-        /*fabExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(Schedule.this)
-                        .setIcon(R.drawable.ic_export)
-                        .setTitle("Export to Excel")
-                        .setMessage("Do you want to export data to excel? The file will be saved in DOWNLOADS folder.")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String dateAndTime = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss").format(new Date());
-
-                                String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                                File file = new File(pdfPath, "STS Report - " + dateAndTime + ".csv");
-
-                                try {
-                                    FileWriter fw = new FileWriter(file);
-
-                                    fw.append("").append("Therapist");
-                                    fw.append(",");
-                                    fw.append("").append("Day Of Week");
-                                    fw.append(",");
-                                    fw.append("").append("Time");
-                                    fw.append(",");
-                                    fw.append("").append("Client");
-                                    fw.append(",");
-                                    fw.append("").append("Status");
-                                    fw.append(",");
-                                    fw.append("").append("Message");
-                                    fw.append("\n");
-
-                                    for (int i = 0; i < list.size(); i++) {
-
-                                        HashMap<String, String> academicYear = list.get(i);
-                                        String classS = model.getYear();
-                                        String branch = model.getBranch();
-                                        String projectType = model.getProjectType();
-                                        String subject = model.getSubject();
-                                        String projectTitle = model.getProjectTitle();
-
-                                        fw.append("").append((CharSequence) academicYear);
-                                        fw.append(",");
-                                        fw.append("").append(classS);
-                                        fw.append(",");
-                                        fw.append("").append(branch);
-                                        fw.append(",");
-                                        fw.append("").append(projectType);
-                                        fw.append(",");
-                                        fw.append("").append(subject);
-                                        fw.append(",");
-                                        fw.append("").append(projectTitle);
-                                        fw.append("\n");
-
-                                        Log.d("FILE_CONTENTS", String.valueOf(academicYear));
-                                    }
-
-                                    fw.flush();
-                                    fw.close();
-
-                                    Toast.makeText(Schedule.this, "File saved to: " + file, Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                    Toast.makeText(Schedule.this, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                                //Toast.makeText(Schedule.this, "Coming soon", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
-            }
-        });*/
-
     }
 
     private void loadSchedule() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -256,7 +192,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSelectedScheduleClients() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -286,7 +222,7 @@ public class Schedule extends AppCompatActivity {
     private void loadSelectedHistoryClients() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -316,7 +252,7 @@ public class Schedule extends AppCompatActivity {
     private void loadHistory() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -356,6 +292,7 @@ public class Schedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
@@ -370,6 +307,7 @@ public class Schedule extends AppCompatActivity {
                 arrayListName.addAll(ay);
 
                 HashMap<String, String> item = new HashMap<>();
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -393,7 +331,7 @@ public class Schedule extends AppCompatActivity {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             adapter = new SimpleAdapter(this, list, R.layout.schedule_items,
-                    new String[]{"DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+                    new String[]{"Date", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -550,5 +488,22 @@ public class Schedule extends AppCompatActivity {
         intent.putExtra("type", "user");
         intent.putExtra("therapistName", therapistName);
         startActivity(intent);
+    }
+
+    public void orderDatePicker(View view) {
+        final Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONDAY, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                txtAppointmentDate.setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        new DatePickerDialog(Schedule.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+
     }
 }

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView txtTherapistName, txtSlotDay, txtAt, txtSlotTime, txtClientName, txtUpdatedOn;
 
-    ArrayList<String> listTherapists, listTime, listClients, listDayOfWeek;
+    ArrayList<String> listTherapists, listTime, listClients, listDayOfWeek, listDate;
 
     CardView cardHere, cardAbsent, cardPhoneCall;
 
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         listTime = new ArrayList<>();
         listClients = new ArrayList<>();
         listDayOfWeek = new ArrayList<>();
+        listDate = new ArrayList<>();
 
         final Handler ha = new Handler();
         ha.postDelayed(new Runnable() {
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         final String time = txtSlotTime.getText().toString().trim();
         final String client = txtClientName.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "" + getString(R.string.api),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
     private void deleteCurrentItem(String therapist, String dayOfWeek, String time, String client) {
         final ProgressDialog loading = ProgressDialog.show(this, "Removing Data", "Please Wait");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec" + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=deleteRecord&Therapists=" + therapist + "&DayOfWeek=" + dayOfWeek + "&Time=" + time + "&Client=" + client,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     public void getScheduleDetails() {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please Wait");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec" + "?action=getSchedule",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getSchedule",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -294,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
             listTherapists.clear();
             listDayOfWeek.clear();
+            listDate.clear();
             listTime.clear();
             listClients.clear();
 
@@ -301,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String therapists = jo.getString("Therapists");
+                String date = jo.getString("Date");
                 String dayOfWeek = jo.getString("DayOfWeek");
                 String time = jo.getString("Time");
                 String client = jo.getString("Client");
@@ -316,14 +319,15 @@ public class MainActivity extends AppCompatActivity {
 
                 listTherapists.add(therapists);
                 listDayOfWeek.add(dayOfWeek);
+                listDate.add(date);
                 listTime.add("" + total);
                 listClients.add(client);
             }
 
             String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Date d = new Date();
-            String dayOfTheWeek = sdf.format(d);
+            String date = sdf.format(d);
 
             String[] tokens = currentTime.split(":");
             int minutesToMs = Integer.parseInt(tokens[1]) * 60000;
@@ -331,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
             long currentTimeInMS = minutesToMs + hoursToMs;
 
             for (int i = 0; i < listTime.size(); i++) {
-                if ( (accountHolder.equals(listTherapists.get(i)) && (Integer.parseInt(String.valueOf(currentTimeInMS)) >= Integer.parseInt(listTime.get(i)))) && dayOfTheWeek.equals(listDayOfWeek.get(i)) ) {
+                if ( (accountHolder.equals(listTherapists.get(i)) && (Integer.parseInt(String.valueOf(currentTimeInMS)) >= Integer.parseInt(listTime.get(i)))) && date.equals(listDate.get(i)) ) {
 
                     currentTimeSlot = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Long.parseLong(listTime.get(i))),
                             TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(listTime.get(i))) % TimeUnit.HOURS.toMinutes(1));

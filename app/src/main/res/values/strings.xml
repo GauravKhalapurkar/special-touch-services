@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Special Touch Services</string>
+    <string name="api">https://script.google.com/macros/s/AKfycby9M78g_I0L2WYvGemnF8I-HyO0pbmlOMp9XA1IFS25PYaR9WSGHx8k7WuRgvzb0Llc9g/exec</string>
 </resources>

@@ -84,7 +84,7 @@ public class StatsView extends AppCompatActivity {
     private void loadData() {
         loading =  ProgressDialog.show(this,"Loading","Please Wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbyVHB9YgxNBmkx3XByX6uuoS-TtchpZ62_dk2E-NgiVDgHa2n3v7kinowbWQRlZ_tcaMg/exec?action=getHistory",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.api) + "?action=getHistory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
