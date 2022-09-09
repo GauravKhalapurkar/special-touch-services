@@ -48,6 +48,27 @@
                     android:textSize="@dimen/_13sdp"/>-->
 
                 <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:text="30-07-2022"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16sdp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DAY OF WEEK"
+                    android:textSize="@dimen/_13sdp"/>-->
+
+                <TextView
                     android:id="@+id/txtDayOfWeek"
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="wrap_content"

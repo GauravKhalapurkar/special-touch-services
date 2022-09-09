@@ -9,11 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -103,6 +106,23 @@ public class Schedule extends AppCompatActivity {
 
         txtAppointmentDate = (TextView) findViewById(R.id.txtAppointmentDate);
 
+        txtAppointmentDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int i1, int i2) {
+                Schedule.this.adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         fabExport = (FloatingActionButton) findViewById(R.id.fabExport);
 
         tglBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +131,14 @@ public class Schedule extends AppCompatActivity {
                 if (tglBtn.getText().toString().equals("SCHEDULE")) {
                     spinnerName.setSelection(0);
                     loadSchedule();
+                    txtAppointmentDate.setText("");
                     loading.dismiss();
                 }
 
                 if (tglBtn.getText().toString().equals("HISTORY")) {
                     spinnerName.setSelection(0);
                     loadHistory();
+                    txtAppointmentDate.setText("");
                     loading.dismiss();
                 }
             }
@@ -505,5 +527,13 @@ public class Schedule extends AppCompatActivity {
         };
         new DatePickerDialog(Schedule.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
 
+    }
+
+    public void clearClients(View view) {
+        spinnerName.setSelection(0);
+    }
+
+    public void clearDate(View view) {
+        txtAppointmentDate.setText("");
     }
 }

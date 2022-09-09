@@ -3,15 +3,19 @@ package com.gakdevelopers.specialtouchservices;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -38,6 +42,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +78,8 @@ public class AdminSchedule extends AppCompatActivity {
 
     ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
+    TextView txtAppointmentDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +111,25 @@ public class AdminSchedule extends AppCompatActivity {
 
         fabExport = (FloatingActionButton) findViewById(R.id.fabExport);
 
+        txtAppointmentDate = (TextView) findViewById(R.id.txtAppointmentDate);
+
+        txtAppointmentDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int i1, int i2) {
+                AdminSchedule.this.adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         tglBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +137,7 @@ public class AdminSchedule extends AppCompatActivity {
                     spinnerClient.setSelection(0);
                     spinnerTherapist.setSelection(0);
                     loadSchedule();
+                    txtAppointmentDate.setText("");
                     loading.dismiss();
                 }
 
@@ -118,6 +145,7 @@ public class AdminSchedule extends AppCompatActivity {
                     spinnerClient.setSelection(0);
                     spinnerTherapist.setSelection(0);
                     loadHistory();
+                    txtAppointmentDate.setText("");
                     loading.dismiss();
                 }
             }
@@ -368,6 +396,7 @@ public class AdminSchedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
@@ -388,6 +417,7 @@ public class AdminSchedule extends AppCompatActivity {
 
                 HashMap<String, String> item = new HashMap<>();
                 item.put("Therapists", Therapists);
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -412,7 +442,7 @@ public class AdminSchedule extends AppCompatActivity {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             adapter = new SimpleAdapter(this, list, R.layout.admin_schedule_items,
-                    new String[]{"Therapists", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+                    new String[]{"Therapists", "Date", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -432,12 +462,14 @@ public class AdminSchedule extends AppCompatActivity {
 
                 JSONObject jo = jArray.getJSONObject(i);
                 String Therapists = jo.getString("Therapists");
+                String Date = jo.getString("Date");
                 String DayOfWeek = jo.getString("DayOfWeek");
                 String Time = jo.getString("Time");
                 String Client = jo.getString("Client");
 
                 HashMap<String, String> item = new HashMap<>();
                 item.put("Therapists", Therapists);
+                item.put("Date", Date);
                 item.put("DayOfWeek", DayOfWeek);
                 item.put("Time", Time);
                 item.put("Client", Client);
@@ -465,7 +497,7 @@ public class AdminSchedule extends AppCompatActivity {
             txtNoData.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             adapter = new SimpleAdapter(this, list, R.layout.admin_schedule_items,
-                    new String[]{"Therapists", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
+                    new String[]{"Therapists", "Date", "DayOfWeek", "Time", "Client"}, new int[]{R.id.txtTherapistName, R.id.txtDate, R.id.txtDayOfWeek, R.id.txtTime, R.id.txtClient});
 
             listView.setAdapter((android.widget.ListAdapter) adapter);
         }
@@ -596,5 +628,34 @@ public class AdminSchedule extends AppCompatActivity {
         Intent intent = new Intent(AdminSchedule.this, StatsView.class);
         intent.putExtra("type", "client");
         startActivity(intent);
+    }
+
+    public void orderDatePicker(View view) {
+        final Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONDAY, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                txtAppointmentDate.setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        new DatePickerDialog(AdminSchedule.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+    }
+
+    public void clearTherapists(View view) {
+        spinnerTherapist.setSelection(0);
+    }
+
+    public void clearClients(View view) {
+        spinnerClient.setSelection(0);
+    }
+
+    public void clearDate(View view) {
+        txtAppointmentDate.setText("");
     }
 }
